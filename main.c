@@ -9,7 +9,9 @@
 
 int main(int argc, char* argv[])
 {
-    hello();
+    struct PCB test;
+    set_zero_pcb(&test);
+    read_pcb(test);
 
     return 0;
 }
