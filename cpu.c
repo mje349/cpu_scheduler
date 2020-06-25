@@ -91,7 +91,7 @@ struct PCB handle_process_arrival_pp(
         //TODO
         if(MIN(current_process.process_priority, ready_queue[0].process_priority) == ready_queue[0].process_priority)
         {
-            ready_queue[queue_cnt] = new_process;
+            ready_queue[*queue_cnt] = new_process;
             new_process.execution_starttime = 0;
             new_process.execution_endtime = 0;
             new_process.remaining_bursttime = new_process.total_bursttime;
