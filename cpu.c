@@ -64,7 +64,13 @@ struct PCB handle_process_arrival_pp(
     int is_null = current_process.process_id + current_process.arrival_timestamp + current_process.total_bursttime + current_process.execution_starttime 
         + current_process.execution_endtime + current_process.remaining_bursttime + current_process.process_priority;
 
-    //if this evaluates true: then the current process is the null pcb
+    // if this evaluates true: then the current process is the null pcb
+    // This method should then return the PCB of the newly-arriving process
+    // inidicating that it is the process to execute next.
+    //
+    // The PCB of the new process is then modified so that the execution start time
+    // is set to the current timestamp, the execution end time is set to the sum of the current
+    // timestamp and the total burst time and the remaining burst time is set to the total burst time.
     if (!is_null)
     {
         new_process.execution_starttime = timestamp;
@@ -72,6 +78,17 @@ struct PCB handle_process_arrival_pp(
         new_process.remaining_bursttime = new_process.total_bursttime;
 
         return new_process;
+    }
+
+    // If there is a currently-running process, the method compares the priority of the newly-arriving
+    // process with the currently-running process. If the new process has equal or lower priority
+    // (note: smaller integers for the priority field in the PCB indicate higher priority), then its
+    // PCB is simply added to the ready queue and the return value is the PCB of the curretnly-running
+    // process. As the newly-arriving process is added to the ready queue, its execution start time and 
+    // execution end time are set to 0, and the remaining burst time is the same as its total burst time.
+    if (is_null)//if this evaluates to true - then the current process is not the null_pcb
+    {
+        //TODO
     }
 
     return current_process;
