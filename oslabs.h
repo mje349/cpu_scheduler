@@ -77,3 +77,7 @@ struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *q
 void hello();
 void read_pcb(struct PCB pcb);
 void set_zero_pcb(struct PCB *pcb);
+
+//Helper Functions
+int is_null_pcb(struct PCB *pcb);
+
