@@ -97,6 +97,14 @@ struct PCB handle_process_arrival_pp(
             new_process.remaining_bursttime = new_process.total_bursttime;
         }
 
+        // If the new process has a higher priority, then the PCB of the currently running process is added to
+        // the ready queue and the return value is the PC of the new process. In this case, the PCB of the new
+        // process is modified so that the execution start time is set to the current timestamp, the execution
+        // end time is set to the sum of the curret timestamp and the total burst time and the remaining 
+        // burst time is set to the total burst time. Also, the PCB of the currently running process is added
+        // to the ready queue after marking its execution end time as 0, and adjusting its remaining burst
+        // time.
+
 
 
         
