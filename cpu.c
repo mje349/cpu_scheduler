@@ -83,12 +83,23 @@ struct PCB handle_process_arrival_pp(
     // If there is a currently-running process, the method compares the priority of the newly-arriving
     // process with the currently-running process. If the new process has equal or lower priority
     // (note: smaller integers for the priority field in the PCB indicate higher priority), then its
-    // PCB is simply added to the ready queue and the return value is the PCB of the curretnly-running
+    // PCB is simply added to the ready queue and the return value is the PCB of the currently-running
     // process. As the newly-arriving process is added to the ready queue, its execution start time and 
     // execution end time are set to 0, and the remaining burst time is the same as its total burst time.
     if (is_null)//if this evaluates to true - then the current process is not the null_pcb
     {
         //TODO
+        if(MIN(current_process.process_priority, ready_queue[0].process_priority) == ready_queue[0].process_priority)
+        {
+            ready_queue[queue_cnt] = new_process;
+            new_process.execution_starttime = 0;
+            new_process.execution_endtime = 0;
+            new_process.remaining_bursttime = new_process.total_bursttime;
+        }
+
+
+
+        
     }
 
     return current_process;
