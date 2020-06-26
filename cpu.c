@@ -112,3 +112,22 @@ struct PCB handle_process_arrival_pp(
 
     return current_process;
 }
+
+// This method implements the logic to handle the completion of execution of a process in a Priority-based
+// Preemptive Scheduler. Specifically, it takes three inputs: the ready queue (an array of PCB structs),
+// the number of items in the ready queue, and the current timestamp
+//
+// This method determines the process to execute next and returns its PCB
+//
+struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
+{
+
+    // If the ready_queue is empty, the method returns the NULLPCB, indicating that there is no process to
+    // execute. Otherwise, the method finds the PCB of the process in the ready_queue with the highest
+    // priority (smaller integers for the priority field in the PCB mean higher priorities), removes this
+    // PCB from the ready_queue and returns it. Before returning the PCB of the next process to execute,
+    // it is modified to set the execution start time as the current timestamp and the execution end time
+    // as the sum of the current timestamp and the remaining burst time.
+
+    return ready_queue[0];
+}
