@@ -80,4 +80,5 @@ void set_zero_pcb(struct PCB *pcb);
 
 //Helper Functions
 int is_null_pcb(struct PCB *pcb);
+void setup_pcb(struct PCB* pcb, int pid, int ats, int tbt, int est, int eet, int rbt, int pp);
 

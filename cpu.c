@@ -35,6 +35,18 @@ void set_zero_pcb(struct PCB *pcb)
     pcb->process_priority = 0;
 }
 
+//Fills a PCB
+void setup_pcb(struct PCB* pcb, int pid, int ats, int tbt, int est, int eet, int rbt, int pp)
+{
+    pcb->process_id = pid;
+    pcb->arrival_timestamp = ats;
+    pcb->total_bursttime = tbt;
+    pcb->execution_starttime = est;
+    pcb->execution_endtime = eet;
+    pcb->remaining_bursttime = rbt;
+    pcb->process_priority = pp;
+}
+
 //Checks if a pcb is the null pcb
 //by adding all values. If the returned value is non zero,
 //then the pcb is not the null pcb.
