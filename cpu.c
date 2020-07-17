@@ -13,6 +13,9 @@
 void test();
 int is_null_pcb(struct PCB *check);
 
+// Enqueue Function for PCB ready_queue
+//int enqueue_pcb(struct PCB* ready_queue[], int* queue_cnt, struct PCB* to_enqueue);
+
 void hello()
 {
     printf("Hello from oslabs!\n");
@@ -153,6 +156,17 @@ struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int 
     return ready_queue[0];
 }
 
+// Enqueues a PCB
+int enqueue_pcb(struct PCB ready_queue[], int* queue_cnt, struct PCB* to_enqueue)
+{
+    // Queue is Full - return 0 as error code
+    if((*queue_cnt) >= QUEUEMAX)
+        return 0;
 
+    ready_queue[(*queue_cnt)] = (*to_enqueue);
+    (*queue_cnt)++;
+
+    return 1;
+}
 
 

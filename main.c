@@ -14,11 +14,13 @@ int main( int argc, char* argv[])
     int queue_cnt = 0;
     struct PCB current_process;
     struct PCB new_process;
-    int time_stamp = 2;
+    struct PCB null_pcb;
+    //int time_stamp = 2;
 
     set_pcb(&current_process, 1, 1, 4, 1, 5, 4, 8);
     set_pcb(&new_process, 2, 2, 3, 0, 0, 3, 6);
-
+    set_pcb(&null_pcb, 0, 0, 0, 0, 0, 0, 0);
+/*
     printf("Current Process: \n");
     display_pcb(&current_process);
     printf("\n");
@@ -35,6 +37,47 @@ int main( int argc, char* argv[])
     printf("\n\n");
     printf("*queue_cnt: %d\n", queue_cnt);
     printf("queue_cnt: %d\n", queue_cnt);
+*/
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &current_process))
+            printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &new_process))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+    if(!enqueue_pcb(ready_queue, &queue_cnt, &null_pcb))
+        printf("Ready Queue is full\n");
+
+
+    for(int i = 0; i < queue_cnt; ++i)
+    {
+        display_pcb(&ready_queue[i]);
+        printf("\n==================\n");
+    }
+
 
     return 0;
 }

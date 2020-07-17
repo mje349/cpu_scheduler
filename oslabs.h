@@ -72,3 +72,4 @@ void hello();
 void set_pcb(struct PCB *to_set, int pid, int ats, int tbt, int est, int eet, int rbt, int pp);
 void display_pcb(struct PCB *pcb);
 void is_null(struct PCB *pcb);
+int enqueue_pcb(struct PCB ready_queue[], int* queue_cnt, struct PCB* to_enqueue);
