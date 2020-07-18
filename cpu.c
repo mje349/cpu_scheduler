@@ -135,7 +135,38 @@ struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queu
 // Handle Request Arrival SRTP
 struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int time_stamp)
 {
-    return current_process;
+    // If there is no currently running process
+    if(is_null_pcb(&current_process))
+    {
+        new_process.execution_starttime = time_stamp;
+        new_process.execution_endtime = time_stamp + new_process.total_bursttime;
+        new_process.remaining_bursttime = new_process.total_bursttime;
+        return new_process;
+    }
+
+    else if(current_process.remaining_bursttime < new_process.remaining_bursttime)
+    {
+        ready_queue[(*queue_cnt)] = new_process;
+        (*queue_cnt)++;
+        new_process.execution_starttime = 0;
+        new_process.execution_endtime = 0;
+        new_process.remaining_bursttime = new_process.total_bursttime;
+
+        return current_process;
+    }
+
+    current_process.execution_starttime = 0;
+    current_process.execution_endtime = 0;
+    current_process.remaining_bursttime = current_process.total_bursttime;
+    ready_queue[(*queue_cnt)] = current_process;
+    (*queue_cnt)++;
+
+    new_process.execution_starttime = time_stamp;
+    new_process.execution_endtime = time_stamp + new_process.total_bursttime;
+    new_process.remaining_bursttime = new_process.total_bursttime;
+    
+
+    return new_process;
 }
 
 // Handle Process Completion PP
@@ -168,5 +199,4 @@ int enqueue_pcb(struct PCB ready_queue[], int* queue_cnt, struct PCB* to_enqueue
 
     return 1;
 }
-
 
