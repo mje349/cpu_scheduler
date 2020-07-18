@@ -129,6 +129,21 @@ struct PCB handle_process_arrival_pp(struct PCB ready_queue[QUEUEMAX], int *queu
 // Handle Request Arrival RR
 struct PCB handle_process_arrival_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, struct PCB current_process, struct PCB new_process, int timestamp, int time_quantum)
 {
+    if(is_null_pcb(&current_process))
+    {
+         new_process.execution_starttime = timestamp;
+         new_process.execution_endtime = timestamp + MIN(new_process.total_bursttime, time_quantum);
+         new_process.remaining_bursttime = new_process.total_bursttime;
+        return new_process;
+    }
+
+
+    new_process.execution_starttime = 0;
+    new_process.execution_endtime = 0;
+    new_process.remaining_bursttime = new_process.total_bursttime;
+    ready_queue[(*queue_cnt)] = new_process;
+    (*queue_cnt)++;
+    
     return current_process;
 }
 
@@ -172,7 +187,37 @@ struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *qu
 // Handle Process Completion PP
 struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
 {
-    return ready_queue[0];
+    if((*queue_cnt) == 0)
+    {
+        struct PCB null_pcb;
+        set_pcb(&null_pcb, 0, 0, 0, 0, 0, 0, 0);
+
+        return null_pcb;
+    }
+
+    // Locate the index of the highest priority
+    int high_index = 0;
+
+    for (int i = 1; i < (*queue_cnt); i++)
+    {
+        if (ready_queue[high_index].process_priority > ready_queue[i].process_priority)
+            high_index = i;
+    }
+
+    struct PCB high_priority = ready_queue[high_index];
+
+    // Shift elements up to fill the gap
+    for (int i = high_index; i < (*queue_cnt); i++)
+    {
+        ready_queue[i] = ready_queue[i+1];
+    }
+
+    *queue_cnt = *queue_cnt -1;
+
+    high_priority.execution_starttime = timestamp;
+    high_priority.execution_endtime = timestamp + high_priority.remaining_bursttime;
+
+    return high_priority; 
 }
 
 // Handle Request Completion RR
