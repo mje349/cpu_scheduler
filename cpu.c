@@ -264,7 +264,40 @@ struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *q
 // Handle Request Completion SRTP
 struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
 {
-    return ready_queue[0];
+    //EMPTY READY QUEUE
+    if((*queue_cnt) == 0)
+    {
+        struct PCB null_pcb;
+        set_pcb(&null_pcb, 0, 0, 0, 0, 0, 0, 0);
+
+        return null_pcb;
+    }
+
+    // Locate the index of the smallest remaining burst time
+    int srbt_index = 0;
+
+    for (int i = 1; i < (*queue_cnt); i++)
+    {
+        if (ready_queue[srbt_index].remaining_bursttime > ready_queue[i].remaining_bursttime)
+            srbt_index = i;
+    }
+
+    struct PCB srbt = ready_queue[srbt_index];
+
+    // Shift elements up to fill the gap
+    for (int i = srbt_index; i < (*queue_cnt); i++)
+    {
+        ready_queue[i] = ready_queue[i+1];
+    }
+
+    *queue_cnt = *queue_cnt - 1;
+
+    srbt.execution_starttime = timestamp;
+    srbt.execution_endtime = timestamp + srbt.remaining_bursttime;
+
+    return srbt;
+
+
 }
 
 // Enqueues a PCB

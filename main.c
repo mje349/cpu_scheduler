@@ -16,11 +16,11 @@ int main( int argc, char* argv[])
     struct PCB process2;
     struct PCB process3;
     int timestamp = 2;
-    int time_quantum = 10;
+    //int time_quantum = 10;
 
-    set_pcb(&process1, 1, 22, 8, 0, 0, 8, 0);
-    set_pcb(&process2, 2, 21, 8, 0, 0, 8, 0);
-    set_pcb(&process3, 3, 23, 8, 0, 0., 8, 0);
+    set_pcb(&process1, 1, 1, 23, 0, 0, 23, 0);
+    set_pcb(&process2, 2, 1, 22, 0, 0, 22, 0);
+    set_pcb(&process3, 3, 1, 24, 0, 0, 24, 0);
 
     enqueue_pcb(ready_queue, &queue_cnt, &process1);
     enqueue_pcb(ready_queue, &queue_cnt, &process2);
@@ -34,7 +34,7 @@ int main( int argc, char* argv[])
 
     printf("\n AFTER\n\n");
 
-    struct PCB result = handle_process_completion_rr(ready_queue, &queue_cnt, timestamp, time_quantum);
+    struct PCB result = handle_process_completion_srtp(ready_queue, &queue_cnt, timestamp);
 
     for(int i = 0; i < queue_cnt; ++i)
     {
