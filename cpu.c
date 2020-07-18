@@ -187,6 +187,8 @@ struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *qu
 // Handle Process Completion PP
 struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp)
 {
+
+    //EMPTY READY QUEUE
     if((*queue_cnt) == 0)
     {
         struct PCB null_pcb;
@@ -194,6 +196,7 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
 
         return null_pcb;
     }
+
 
     // Locate the index of the highest priority
     int high_index = 0;
@@ -223,7 +226,39 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
 // Handle Request Completion RR
 struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *queue_cnt, int timestamp, int time_quantum)
 {
-    return ready_queue[0];
+    //EMPTY READY QUEUE
+    if((*queue_cnt) == 0)
+    {
+        struct PCB null_pcb;
+        set_pcb(&null_pcb, 0, 0, 0, 0, 0, 0, 0);
+
+        return null_pcb;
+    }
+
+    // Locate the index of the earliest arrival time
+    int earliest_time_index = 0;
+
+    for (int i = 1; i < (*queue_cnt); i++)
+    {
+        if (ready_queue[earliest_time_index].arrival_timestamp > ready_queue[i].arrival_timestamp)
+            earliest_time_index = i;
+    }
+
+    struct PCB earliest_time = ready_queue[earliest_time_index];
+
+    // Shift elements up to fill the gap
+    for (int i = earliest_time_index; i < (*queue_cnt); i++)
+    {
+        ready_queue[i] = ready_queue[i+1];
+    }
+
+    *queue_cnt = *queue_cnt - 1;
+
+    earliest_time.execution_starttime = timestamp;
+    earliest_time.execution_endtime = timestamp + MIN(time_quantum, earliest_time.remaining_bursttime);
+
+    return earliest_time;
+
 }
 
 // Handle Request Completion SRTP
